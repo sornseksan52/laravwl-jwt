@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class reward extends Model
+class rewardLog extends Model
 {
     //
     protected $fillable = [
         'name',
         'game_item_id',
         'chance',
-        'stock'
+        'qty'
     ];
 
     protected $hidden = [

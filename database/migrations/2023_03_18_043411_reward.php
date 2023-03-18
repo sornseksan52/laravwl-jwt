@@ -13,7 +13,7 @@ class Reward extends Migration
      */
     public function up()
     {
-        Schema::create('reward', function (Blueprint $table) {
+        Schema::create('rewards', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 100);
             $table->string('game_item_id', 20);
@@ -22,7 +22,7 @@ class Reward extends Migration
             $table->timestamps();
         });
 
-        Schema::create('reward_log', function (Blueprint $table) {
+        Schema::create('reward_logs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 100);
             $table->string('game_item_id', 20);
@@ -40,7 +40,7 @@ class Reward extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('reward');
-        Schema::dropIfExists('reward_log');
+        Schema::dropIfExists('rewards');
+        Schema::dropIfExists('reward_logs');
     }
 }

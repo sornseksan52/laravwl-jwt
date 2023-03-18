@@ -28,8 +28,14 @@
                                       :items="desserts"
                                       sort-by="calories"
                                       class="elevation-1"
+                                      :search="search"
                                     >
                                       <template v-slot:top>
+                                        <v-text-field
+                                        v-model="search"
+                                        label="Search"
+                                        class="mx-4"
+                                      ></v-text-field>
                                         <v-toolbar
                                           flat
                                         >
@@ -276,6 +282,7 @@
                         company : '',
                         nationality : ''
                     },
+                    search : '',
 
                 }
             },

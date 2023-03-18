@@ -11,9 +11,9 @@ class Reward extends Seeder
      */
     public function run()
     {
-        DB::table('reward')->truncate();
-        DB::table('reward_log')->truncate();
-		DB::table('reward')->insert(
+        DB::table('rewards')->truncate();
+        DB::table('reward_logs')->truncate();
+		DB::table('rewards')->insert(
             [
                 [ "name"=> "Small Potion Heal", "game_item_id"=> 1050, "chance"=> 0.12, "stock"=> 1000 ],
                 [ "name"=> "Medium Potion Heal", "game_item_id"=> 3315, "chance"=> 0.08, "stock"=> 80 ],

@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RewardController;
 use Illuminate\Support\Facades\Session;
 
 /*
@@ -37,17 +38,19 @@ Route::group([
     Route::post('/edit-user', [AuthController::class, 'userEdit']);
     Route::get('/user-manage', [AuthController::class, 'userManage']);
 
-
-    // Route::get('/check', 'AuthController@check');
-    // Route::get('/refresh',  [AuthController::class, 'refresh']);
-
     Route::any('/login', function () {
         return view('login');
 
     });
 
-
 });
+
+Route::get('/reward', function () {
+    return view('reward');
+});
+
+Route::any('/getReward', [RewardController::class, 'getReward']);
+Route::any('/random', [RewardController::class, 'randomReward']);
 
 
 
