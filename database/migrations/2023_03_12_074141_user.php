@@ -22,7 +22,7 @@ class User extends Migration
             $table->string('username', 100);
             $table->string('company', 150);
             $table->string('nationality', 100);
-            $table->rememberToken();
+            // $table->rememberToken();
             $table->timestamps();
         });
 

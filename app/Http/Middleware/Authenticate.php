@@ -14,8 +14,22 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        if (! $request->expectsJson()) {
-            return route('login');
-        }
+        // if (!$request->expectsJson()) {
+        //     return route('login');
+        // }
     }
+
+    // public function handle($request, Closure $next){
+
+    //     try {
+    //         $user =JWTAuth::toUser($request->header('Authorization'));
+    //     }catch (TokenExpiredException $e) {
+    //         return response()->json([ ' token_expried'], $e->getstatuscode());
+    //     }catch (TokenInvalidException $e) {
+    //         return response()->json(['token_invalid'], $e->getstatuscode());
+    //     }catch (JWTException $e) {
+    //         return response()->json(['error'], 'Token is required');
+    //     }
+    //     return $next($request);
+    // }
 }
