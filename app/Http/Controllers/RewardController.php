@@ -51,7 +51,7 @@ class RewardController extends Controller
                         RewardLog::insert([
                                 'name'          => $percent->name,
                                 "game_item_id"  => $percent->game_item_id,
-                                "chance"        => $percent->game_item_id,
+                                "chance"        => $percent->chance,
                                 "qty"           => 1
                             ]);
                         unset($percent["id"]);

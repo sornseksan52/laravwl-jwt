@@ -140,7 +140,7 @@
                         value: 'name',
                         },
                         { text: 'Game item id', value: 'game_item_id' },
-                        { text: 'Chance', value: 'chance' },
+                        // { text: 'Chance', value: 'chance' },
                         { text: 'Qty', value: 'qty' }
                     ],
                     reward_random : [],
