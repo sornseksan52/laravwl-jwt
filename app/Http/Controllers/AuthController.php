@@ -18,6 +18,55 @@ class AuthController extends Controller
 
     }
 
+    public function userEdit(Request $request){
+        // echo "<pre>";
+        // print_r($_POST);
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
+        ]);
+
+        try {
+            $id = $request->id;
+
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|between:2,100',
+                'email' => 'required|string|email|max:100|',
+                'password' => 'required|string|min:6',
+                'phone' => 'required|string|min:10',
+                'username' => 'required|string|min:6',
+                'company' => 'required|string',
+                'nationality' => 'required|string'
+            ]);
+
+            if($validator->fails()){
+                return response()->json($validator->errors(), 422);
+            }
+
+            $user = User::find($id)->update(array_merge($validator->validated(),['password' => bcrypt($request->password)]));
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User successfully Update',
+                'user' => $user
+            ], 201);
+
+
+        } catch (\Exception $e) {
+
+            return response()->json(['status' => 'error' , 'message' => $e->getMessage()], 500);
+
+        }
+
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+
+    }
+
     public function userDelete(Request $request){
         $id = $request->id;
         try {
@@ -90,7 +139,7 @@ class AuthController extends Controller
                 'nationality' => 'required|string'
             ]);
             if($validator->fails()){
-                return response()->json($validator->errors(), 400);
+                return response()->json($validator->errors(), 422);
             }
 
             $user = User::create(array_merge(
@@ -114,7 +163,7 @@ class AuthController extends Controller
 
     public function logout(Request $request) {
         auth()->logout();
-        return response()->json(['message' => 'User successfully signed out']);
+        return response()->json(['status' => 'success','message' => 'User successfully signed out']);
     }
 
     public function refresh(Request $request) {
@@ -135,110 +184,5 @@ class AuthController extends Controller
             // 'user'          => auth()->user()
         ]);
     }
-
-
-    // new version
-    // public function refresh(Request $request) {
-    //     $success = [
-    //         'token' => auth()->refresh()
-    //     ];
-    //     return $this->sendResponse($success, 'refresh login', 200);
-    // }
-
-    // public function logout(Request $request) {
-    //     auth()->logout();
-    //     return response()->json(['message' => 'User successfully signed out']);
-    // }
-
-    // public function sendResponse($data, $message, $status = 200)
-    // {
-    //     $response = [
-    //         'data' => $data,
-    //         'message' => $message
-    //     ];
-
-    //     return response()->json($response, $status);
-    // }
-
-    // public function sendError($errorData, $message, $status = 500)
-    // {
-    //     $response = [];
-    //     $response['message'] = $message;
-    //     if (!empty($errorData)) {
-    //         $response['data'] = $errorData;
-    //     }
-
-    //     return response()->json($response, $status);
-    // }
-
-    // public function register(Request $request)
-    // {
-    //     $input = $request->only('name', 'email', 'password', 'c_password');
-
-    //     $validator = Validator::make($input, [
-    //         'name' => 'required|string|between:2,100',
-    //         'email' => 'required|string|email|max:100|unique:users',
-    //         'password' => 'required|string|min:6',
-    //         'phone' => '',
-    //         'username' => '',
-    //         'company' => '',
-    //         'nationality' => ''
-    //     ]);
-
-    //     if($validator->fails()){
-    //         return $this->sendError($validator->errors(), 'Validation Error', 422);
-    //     }
-
-    //     $input['password'] = bcrypt($input['password']); // use bcrypt to hash the passwords
-    //     $user = User::create($input); // eloquent creation of data
-
-    //     $success['user'] = $user;
-
-    //     return $this->sendResponse($success, 'user registered successfully', 201);
-
-    // }
-
-    // public function login(Request $request)
-    // {
-    //     $input = $request->only('email', 'password');
-
-    //     $validator = Validator::make($input, [
-    //         'email' => 'required',
-    //         'password' => 'required',
-    //     ]);
-
-    //     if($validator->fails()){
-    //         return $this->sendError($validator->errors(), 'Validation Error', 422);
-    //     }
-
-    //     try {
-    //         // this authenticates the user details with the database and generates a token
-    //         if (! $token = JWTAuth::attempt($input)) {
-    //             return $this->sendError([], "invalid login credentials", 400);
-    //         }
-    //     } catch (JWTException $e) {
-    //         return $this->sendError([], $e->getMessage(), 500);
-    //     }
-
-    //     $success = [
-    //         'token' => $token,
-    //     ];
-    //     return $this->sendResponse($success, 'successful login', 200);
-    // }
-
-    // public function getUser()
-    // {
-    //     try {
-    //         $user = JWTAuth::parseToken()->authenticate();
-    //         if (!$user) {
-    //             return $this->sendError([], "user not found", 403);
-    //         }
-    //     } catch (JWTException $e) {
-    //         return $this->sendError([], $e->getMessage(), 500);
-    //     }
-
-    //     return $this->sendResponse($user, "user data retrieved", 200);
-    // }
-
 
 }

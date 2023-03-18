@@ -28,12 +28,13 @@ Route::group([
     // Route::any('/loginJwt', [AuthController::class, 'loginJwt']);
     Route::post('/check-login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
-    // Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/logout', [AuthController::class, 'logout']);
     // Route::post('/refresh', [AuthController::class, 'refresh']);
     // Route::get('/user-profile', [AuthController::class, 'userProfile']);
 
     Route::get('/get-user', [AuthController::class, 'userProfile']);
     Route::post('/delete-user', [AuthController::class, 'userDelete']);
+    Route::post('/edit-user', [AuthController::class, 'userEdit']);
     Route::get('/user-manage', [AuthController::class, 'userManage']);
 
 

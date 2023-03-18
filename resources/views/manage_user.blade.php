@@ -34,6 +34,7 @@
                                           flat
                                         >
                                           <v-toolbar-title>Manage User</v-toolbar-title>
+
                                           <v-divider
                                             class="mx-4"
                                             inset
@@ -45,15 +46,23 @@
                                             max-width="500px"
                                           >
                                             <template v-slot:activator="{ on, attrs }">
-                                              <v-btn
-                                                color="primary"
-                                                dark
-                                                class="mb-2"
-                                                v-bind="attrs"
-                                                v-on="on"
-                                              >
-                                                New Item
-                                              </v-btn>
+                                                <v-btn
+                                                    color="error"
+                                                    dark
+                                                    class="mb-2 ml-2"
+                                                    @click="logOut"
+                                                    >
+                                                    Logout
+                                                </v-btn>
+                                                <v-btn
+                                                    color="primary"
+                                                    dark
+                                                    class="mb-2"
+                                                    v-bind="attrs"
+                                                    v-on="on"
+                                                >
+                                                    New Item
+                                                </v-btn>
                                             </template>
                                             <v-card>
                                               <v-card-title>
@@ -295,6 +304,7 @@
                 },
 
                 editItem (item) {
+
                     this.editedIndex = this.desserts.indexOf(item)
                     this.editedItem = Object.assign({}, item)
                     this.dialog = true
@@ -315,6 +325,19 @@
                     }
                 },
 
+                logOut : async function(){
+                    let res = await this.ajax_post("{{asset('api/auth/logout')}}","POST",{})
+                    if(res.status == "success"){
+                        Swal.fire({
+                            title: "Logout",
+                            text: res.message,
+                            icon: "success",
+                        }).then(async (result) => {
+                            window.location.href = "{{ asset('api/auth/login') }}";
+                        });
+                    }
+                },
+
                 close () {
                     this.dialog = false
                     this.$nextTick(() => {
@@ -332,12 +355,17 @@
                 },
 
                 save : async function() {
-                    let res = await this.ajax_post("{{asset('api/auth/register')}}","POST", this.editedItem)
+
+                    let path = this.editedIndex === -1 ? 'register' : 'edit-user' //register or update
+
+                    let res = await this.ajax_post(`{{asset('api/auth/${path}')}}`,"POST", this.editedItem)
+
                     if (this.editedIndex > -1) {
                         Object.assign(this.desserts[this.editedIndex], this.editedItem)
                     } else {
                         this.desserts.push(this.editedItem)
                     }
+                    this.get_user()
                     this.close()
                 },
                 get_user : async function(){
@@ -367,7 +395,17 @@
                             error: function(jqXHR, textStatus, errorThrown) {
                                 // console.log('Error:', jqXHR.status, textStatus, errorThrown);
                                 if(jqXHR.status == 422){
-                                    console.log(jqXHR.responseText);
+                                    if(textStatus == "error"){
+                                        Swal.fire({
+                                            title: "เเจ้งเตือน",
+                                            html: JSON.stringify(jqXHR.responseJSON , undefined, 2),
+                                            icon: "error",
+                                        }).then(async (result) => {
+                                            // window.location.reload();
+                                            // window.location.href = "{{ asset('api/auth/login') }}";
+                                        });
+
+                                    }
                                 }else if(jqXHR.status == 401){
                                     if(textStatus == "error"){
                                         Swal.fire({
@@ -380,6 +418,7 @@
                                         });
 
                                     }
+
                                 }
 
                             }
