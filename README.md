@@ -11,9 +11,10 @@
 
 1. git clone https://github.com/sornseksan52/laravwl-jwt.git
 2. copy .env.example .env
-3. docker-compose exec api php artisan key:generate
-4. docker-compose up --build
-5. docker-compose exec api php artisan migrate
-6. docker-compose exec api php artisan db:seed --class=UserSeeder
-7. docker-compose exec api php artisan db:seed --class=Reward
+3. docker-compose exec api php artisan jwt:secret
+4. docker-compose exec api php artisan key:generate
+5. docker-compose up --build
+6. docker-compose exec api php artisan migrate
+7. docker-compose exec api php artisan db:seed --class=UserSeeder
+8. docker-compose exec api php artisan db:seed --class=Reward
 
